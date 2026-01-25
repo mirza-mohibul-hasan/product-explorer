@@ -5,7 +5,7 @@ export function ProductsPage() {
     queryKey: ["health-check"],
     queryFn: async () => {
       return new Promise<string>((resolve) =>
-        setTimeout(() => resolve("Ract Query is working"), 500),
+        setTimeout(() => resolve("React Query is working"), 500),
       );
     },
   });
