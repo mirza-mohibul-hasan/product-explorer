@@ -1,17 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { productService } from "../services/productService";
 
 export function ProductsPage() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["health-check"],
-    queryFn: async () => {
-      return new Promise<string>((resolve) =>
-        setTimeout(() => resolve("React Query is working"), 500),
-      );
-    },
-  });
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Something went wrong</p>;
-
-  return <h1 className="text-xl font-semibold text-green-600">{data}</h1>;
+  useEffect(() => {
+    productService.getProducts().then((data) => console.log(data));
+  }, []);
+  return <h1 className="text-xl font-semibold text-green-600">Products </h1>;
 }
