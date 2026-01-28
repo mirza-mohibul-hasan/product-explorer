@@ -2,7 +2,8 @@ export type SortOrder = "asc" | "desc";
 
 export interface ProductFilters {
   category?: string;
-  search: string;
+  search?: string;
   sortBy?: "price";
-  sortOrder: SortOrder;
+  sortOrder?: SortOrder;
+  limit?: number;
 }

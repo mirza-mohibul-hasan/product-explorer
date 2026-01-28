@@ -26,7 +26,7 @@ export function ProductsPage() {
 
   const sorted =
     filters.sortBy === "price"
-      ? sortProducts(products, filters.sortOrder)
+      ? sortProducts(products, filters.sortOrder || "asc")
       : products;
 
   if (!isFetching && products.length === 0) {
@@ -39,7 +39,7 @@ export function ProductsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
       <h1 className="text-xl font-semibold">Products</h1>
 
       <ProductFilters />

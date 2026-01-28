@@ -8,21 +8,18 @@ export function useProducts(filters: ProductFilters) {
   const { category, search } = filters;
 
   return useInfiniteQuery({
-    queryKey: ["products", category, search],
+    queryKey: ["products", category, search, filters.limit],
     queryFn: ({ pageParam = 0 }) => {
+      const limit = filters.limit || PAGE_LIMIT;
       if (search) {
-        return productService.searchProducts(search, pageParam, PAGE_LIMIT);
+        return productService.searchProducts(search, pageParam, limit);
       }
 
       if (category) {
-        return productService.getProductsByCategory(
-          category,
-          pageParam,
-          PAGE_LIMIT,
-        );
+        return productService.getProductsByCategory(category, pageParam, limit);
       }
 
-      return productService.getProducts(pageParam, PAGE_LIMIT);
+      return productService.getProducts(pageParam, limit);
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
