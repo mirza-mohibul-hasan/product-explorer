@@ -310,7 +310,7 @@ export function ProductDetailPage() {
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 mt-5">
-              <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-sm cursor-pointer">
+              <button className="flex-1 px-6 py-3 rounded-lg font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors shadow-sm cursor-pointer">
                 Add to Cart
               </button>
               <button
