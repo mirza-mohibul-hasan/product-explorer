@@ -1,11 +1,14 @@
 import { Link } from "react-router";
 import type { Product } from "../types/product";
+import { useSettingsStore } from "../store/useSettingsStore";
+import { formatCurrency } from "../utils/currency";
 
 interface ProductTableProps {
   products: Product[];
 }
 
 export function ProductTable({ products }: ProductTableProps) {
+  const currency = useSettingsStore((s) => s.currency);
   return (
     <div className="overflow-x-auto border rounded">
       <table className="min-w-full border-collapse">
@@ -29,7 +32,9 @@ export function ProductTable({ products }: ProductTableProps) {
                 </Link>
               </td>
               <td className="px-3 py-2 border-b capitalize">{p.category}</td>
-              <td className="px-3 py-2 border-b text-right">${p.price}</td>
+              <td className="px-3 py-2 border-b text-right">
+                {formatCurrency(p.price, currency)}
+              </td>
               <td className="px-3 py-2 border-b text-right">{p.stock}</td>
             </tr>
           ))}

@@ -16,6 +16,9 @@ export const AppLayout = () => {
             <Link to="/categories" className="hover:underline">
               Categories
             </Link>
+            <Link to="/settings" className="hover:underline">
+              Settings
+            </Link>
           </div>
         </div>
       </nav>
