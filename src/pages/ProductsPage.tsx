@@ -29,6 +29,15 @@ export function ProductsPage() {
       ? sortProducts(products, filters.sortOrder)
       : products;
 
+  if (!isFetching && products.length === 0) {
+    return (
+      <div className="space-y-4 text-center">
+        <h2 className="text-lg font-semibold">No products found</h2>
+        <p className="text-gray-500">Try adjusting your search or filters.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <h1 className="text-xl font-semibold">Products</h1>

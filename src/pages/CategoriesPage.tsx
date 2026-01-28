@@ -11,6 +11,9 @@ export function CategoriesPage() {
   if (error || !data) {
     return <p className="text-red-600">Failed to load categories.</p>;
   }
+  if (!isLoading && data.length === 0) {
+    return <p>No categories available.</p>;
+  }
 
   return (
     <div className="space-y-6">
