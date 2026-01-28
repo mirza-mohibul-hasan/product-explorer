@@ -1,29 +1,30 @@
-import { useProducts } from "../hooks/useProducts";
+import { useProductFilterStore } from "../store/useProductFilterStore";
 
 export function ProductsPage() {
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useProducts();
+  const { search, setSearch, sortOrder, setSortOrder, resetFilters } =
+    useProductFilterStore();
+
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Products</h1>
 
-      {data?.pages.map((page, i) => (
-        <ul key={i} className="space-y-2">
-          {page.products.map((product) => (
-            <li key={product.id}>{product.title}</li>
-          ))}
-        </ul>
-      ))}
+      <input
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search..."
+        className="border px-2 py-1 rounded"
+      />
 
-      {hasNextPage && (
-        <button
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-          className="px-4 py-2 border rounded"
-        >
-          {isFetchingNextPage ? "Loading..." : "Load more"}
-        </button>
-      )}
+      <button
+        onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+        className="px-3 py-1 border rounded"
+      >
+        Sort: {sortOrder}
+      </button>
+
+      <button onClick={resetFilters} className="px-3 py-1 border rounded">
+        Reset
+      </button>
     </div>
   );
 }
