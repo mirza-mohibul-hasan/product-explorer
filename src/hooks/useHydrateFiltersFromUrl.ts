@@ -13,9 +13,9 @@ export function useHydrateFiltersFromUrl() {
     const sortBy = params.get("sortBy");
     const order = params.get("order");
 
-    if (q) setSearch(q);
-    if (category) setCategory(category);
-    if (sortBy === "price") setSortBy("price");
-    if (order === "asc" || order === "desc") setSortOrder(order);
+    setSearch(q || "");
+    setCategory(category || undefined);
+    setSortBy(sortBy === "price" ? "price" : undefined);
+    setSortOrder(order === "asc" || order === "desc" ? order : "asc");
   }, [params, setSearch, setCategory, setSortBy, setSortOrder]);
 }

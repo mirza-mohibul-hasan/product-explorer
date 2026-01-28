@@ -6,6 +6,9 @@ import { CategoriesPage } from "../pages/CategoriesPage";
 import { SettingsPage } from "../pages/SettingsPage";
 import RouteError from "../components/RouteError";
 
+import { HomePage } from "../pages/HomePage";
+import { NotFoundPage } from "../pages/NotFoundPage";
+
 export const router = createBrowserRouter([
   {
     element: <AppLayout />,
@@ -13,23 +16,36 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Hello World</h1>,
+        element: <HomePage />,
       },
       {
         path: "products",
-        element: <ProductsPage />,
-      },
-      {
-        path: "products/:id",
-        element: <ProductDetailPage />,
-      },
-      {
-        path: "categories",
-        element: <CategoriesPage />,
+        children: [
+          {
+            index: true,
+            element: <ProductsPage />,
+          },
+          {
+            path: "search",
+            element: <ProductsPage />,
+          },
+          {
+            path: ":id",
+            element: <ProductDetailPage />,
+          },
+          {
+            path: "categories",
+            element: <CategoriesPage />,
+          },
+        ],
       },
       {
         path: "settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },
