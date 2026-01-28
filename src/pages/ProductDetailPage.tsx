@@ -15,6 +15,7 @@ import {
   Eye,
   Heart,
 } from "lucide-react";
+import { ProductDetailSkeleton } from "../components/Skeleton/ProductDetailSkeleton";
 
 const INFO_CARDS = [
   {
@@ -44,11 +45,7 @@ export function ProductDetailPage() {
   const [zoomEnabled, setZoomEnabled] = useState(false);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (error || !product) {
@@ -72,7 +69,6 @@ export function ProductDetailPage() {
   const savingsPercentage = product.discountPercentage;
   const reviewsCount = product.reviews?.length || 0;
 
-  // Note: API images are strings, UI expects objects with url. Adapting.
   const images =
     product.images?.length > 0 ? product.images : [product.thumbnail];
 

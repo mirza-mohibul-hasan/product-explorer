@@ -63,7 +63,8 @@ The application separates concerns into:
    ```
 
 3. Lint and format:
-   ```bash
-   pnpm lint
-   pnpm format
-   ```
+
+```bash
+ pnpm lint
+ pnpm format
+```
