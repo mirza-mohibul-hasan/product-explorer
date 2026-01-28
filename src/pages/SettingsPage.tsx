@@ -1,6 +1,6 @@
 import { useSettings } from "../context/SettingsContext";
 import type { Currency } from "../types/settings";
-import { Settings, CreditCard, Check, Globe } from "lucide-react";
+import { CreditCard, Check, Globe } from "lucide-react";
 
 export function SettingsPage() {
   const { currency, setCurrency } = useSettings();
