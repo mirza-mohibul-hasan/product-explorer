@@ -1,14 +1,14 @@
 import { Link } from "react-router";
 import type { Product } from "../types/product";
-import { useSettingsStore } from "../store/useSettingsStore";
 import { formatCurrency } from "../utils/currency";
+import { useSettings } from "../context/SettingsContext";
 
 interface ProductTableProps {
   products: Product[];
 }
 
 export function ProductTable({ products }: ProductTableProps) {
-  const currency = useSettingsStore((s) => s.currency);
+  const { currency } = useSettings();
   return (
     <div className="overflow-x-auto border rounded">
       <table className="min-w-full border-collapse">

@@ -13,7 +13,7 @@ export const AppLayout = () => {
             <Link to="/products" className="hover:underline">
               Products
             </Link>
-            <Link to="/categories" className="hover:underline">
+            <Link to="/products/categories" className="hover:underline">
               Categories
             </Link>
             <Link to="/settings" className="hover:underline">
