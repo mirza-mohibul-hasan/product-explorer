@@ -25,16 +25,17 @@ A modern product explorer dashboard built with React, TypeScript, React Query, Z
 
 The app follows a clear separation of concerns, visualizing the flow of data and control:
 
-```mermaid
-graph TD
-    UI[UI Components] -->|Interacts with| Zustand[Zustand (Client State)]
-    UI -->|Data Fetching| RQ[React Query (Server State)]
-    RQ -->|Calls| Service[Service Layer]
-    Service -->|Uses| Axios[API Client (Axios)]
-    Axios -->|Returns Data| Service
-    Service -->|Normalized Data| RQ
-    RQ -->|Cached Data| UI
-    Zustand -->|Filters/Settings| UI
+```
+UI Components
+   │
+   ▼
+State Management (Zustand + React Query)
+   │
+   ▼
+Service Layer (Business Logic)
+   │
+   ▼
+API Client (Axios)
 ```
 
 ## Trade-offs Made Due to Time Constraints
