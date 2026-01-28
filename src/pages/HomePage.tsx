@@ -1,6 +1,6 @@
 import { useProducts } from "../hooks/useProducts";
 import { ProductCard } from "../components/ProductCard";
-import { Loader2 } from "lucide-react";
+import { HomeSkeleton } from "../components/Skeleton/HomeSkeleton";
 
 export function HomePage() {
   const { data, isLoading, error } = useProducts({
@@ -10,11 +10,7 @@ export function HomePage() {
   const products = data?.pages.flatMap((page) => page.products) ?? [];
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-      </div>
-    );
+    return <HomeSkeleton />;
   }
 
   if (error) {
