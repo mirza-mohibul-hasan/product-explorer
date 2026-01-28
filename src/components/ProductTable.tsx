@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import type { Product } from "../types/product";
 
 interface ProductTableProps {
@@ -19,7 +20,14 @@ export function ProductTable({ products }: ProductTableProps) {
         <tbody>
           {products.map((p) => (
             <tr key={p.id} className="hover:bg-gray-50">
-              <td className="px-3 py-2 border-b">{p.title}</td>
+              <td className="px-3 py-2 border-b">
+                <Link
+                  to={`/products/${p.id}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  {p.title}
+                </Link>
+              </td>
               <td className="px-3 py-2 border-b capitalize">{p.category}</td>
               <td className="px-3 py-2 border-b text-right">${p.price}</td>
               <td className="px-3 py-2 border-b text-right">{p.stock}</td>
