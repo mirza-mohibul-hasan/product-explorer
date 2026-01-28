@@ -4,67 +4,123 @@ A modern product explorer dashboard built with React, TypeScript, React Query, Z
 
 ## Features
 
-- **Product Listing:** Infinite scrolling support.
+- **Product Listing:** Infinite scrolling support for seamless browsing.
 - **Search & Filter:** Search by name, filter by category, and sort by price.
-- **URL Synchronization:** Deep linking support for shareable views.
-- **Product Details:** Dedicated page for product information.
-- **Settings:** Currency preference (USD, EUR, GBP) with persistence.
-- **Resilience:** Error boundaries and user-friendly empty states.
+- **Deep Linking:** URL-driven state ensures views are shareable and bookmarkable.
+- **Detailed Views:** Dedicated pages for full product details (`/products/:id`).
+- **Category Browsing:** Explore products by their specific categories.
+- **Preferences:** Currency switching (USD / EUR / GBP) with local persistence.
+- **Resilience:** comprehensive Error boundaries, Skeleton loading states, and Empty states.
+- **Responsive Design:** Optimized for mobile, tablet, and desktop viewports.
 
 ## Tech Stack
 
 - **Core:** React, TypeScript, Vite, Tailwind CSS
-- **State:** React Query (Server), Zustand (Client)
-- **Quality:** ESLint, Prettier, Husky, pnpm
+- **State Management:**
+  - **Server:** React Query (Caching, Synchronization)
+  - **Client:** Zustand (Preferences, UI State)
+- **Quality Assurance:** ESLint, Prettier, Husky, pnpm
 
-## Interview Questions
+## Architecture Overview
 
-### 1. What trade-offs did you consciously make due to time constraints?
+The app follows a clear separation of concerns, visualizing the flow of data and control:
 
-- **Static Currency Conversion:** I used a static map for currency conversion instead of implementing a real-time API or more complex context logic. This meets the requirement simply and robustly.
-- **Client-Side Sorting:** The API does not support sorting, so I implemented it client-side. This might be slow for very large datasets but works perfectly for the demo scale.
-- **CSS:** I stuck to standard Tailwind classes without a custom design system token layer for speed.
+```mermaid
+graph TD
+    UI[UI Components] -->|Interacts with| Zustand[Zustand (Client State)]
+    UI -->|Data Fetching| RQ[React Query (Server State)]
+    RQ -->|Calls| Service[Service Layer]
+    Service -->|Uses| Axios[API Client (Axios)]
+    Axios -->|Returns Data| Service
+    Service -->|Normalized Data| RQ
+    RQ -->|Cached Data| UI
+    Zustand -->|Filters/Settings| UI
+```
 
-### 2. If this app needed to scale (more data, more features), what would you refactor first?
+## Trade-offs Made Due to Time Constraints
 
-- **Server-Side Pagination/Sorting:** Transition from client-side sorting to backend-supported parameters to handle millions of records.
-- **Testing:** Add comprehensive unit tests (Vitest) and E2E type tests (Playwright) which were omitted for speed.
-- **State Management:** While Context works for settings, breaking down the Zustand store into smaller slices or using a more robust server-state manager wrapper (like TRPC) might be better for complex domain logic.
+### 1. Client-Side Sorting
 
-### 3. Did you use AI tools? If yes, which parts and how did you verify correctness?
+- **Constraint:** The DummyJSON API does not support server-side sorting.
+- **Solution:** Implemented sorting on the client-side after fetching.
+- **Impact:** Works perfectly for demo scale but would need migration to backend sorting for very large datasets to preserve performance.
 
-- **Yes.** I used Google's Gemini-powered agent to assist with:
-  - **Boilerplate Generation:** Quickly scaffolding files like components and hooks.
-  - **Refactoring:** Converting the Zustand store to React Context and updating imports.
-  - **Debugging:** Fixing the initial runtime error with `CategoriesPage`.
-- **Verification:** I manually reviewed every file generated, ran the development server to verify functionality (deep linking, infinite scroll, settings), and checked type safety with `tsc`.
+### 2. Static Currency Conversion
 
-## Architecture
+- **Constraint:** Integrating a real-time FX API adds external dependencies and complexity.
+- **Solution:** Used a static map for currency conversion rates.
+- **future:** Designed to be easily replaceable with a live FX service.
 
-The application separates concerns into:
+### 3. No Authentication
 
-- **UI Components:** Presentation layer.
-- **Store (Zustand):** Client-side preference tracking.
-- **Hooks (React Query):** Data fetching and caching.
-- **Services:** API communication.
+- **Rationale:** Out of scope for this specific assignment.
+- **Extensibility:** The current architecture allows for adding authentication middleware and protected routes without major refactoring.
+
+_These trade-offs are intentional, documented, and fully reversible._
+
+## Scaling & Refactoring Plan
+
+If this app needed to scale to millions of users or products, the strategy would be:
+
+1.  **Move Sorting & Filtering Server-Side**
+    - Reduces client memory usage and improves payload size.
+
+2.  **Introduce Authentication**
+    - Add role-based layouts and protected routes.
+    - Secure API calls with auth middleware.
+
+3.  **Optimize Data Fetching**
+    - Implement product detail prefetching on hover.
+    - Add background cache warming for popular categories.
+
+4.  **Optional Framework Migration**
+    - Migrate to Next.js or Remix if SEO and initial load time (SSR) become critical business requirements.
+
+The current clean architecture supports these evolutions with minimal disruption.
+
+## AI Usage Disclosure
+
+**Status:** Yes, AI tools were used.
+
+### How AI was used:
+
+- **Boilerplate & Scaffolding:** Quickly generating initial component structures and hooks.
+- **Refactoring:** Assisting in converting Zustand stores to Context where appropriate and cleaning up imports.
+- **Design:** Generating ideas for Card templates and Skeleton loaders.
+- **Documentation:** helping structure this README.
+
+### Verification Process:
+
+AI output was **never** blindly copy-pasted. Correctness was verified by:
+
+1.  **Incremental Implementation:** Features were built and tested step-by-step.
+2.  **Manual Verification:** Every feature (Deep linking, Infinite scroll, Settings) was manually tested in the browser.
+3.  **Static Analysis:** Validated via TypeScript strict mode and ESLint.
+4.  **Code Understanding:** I fully understand and can explain/modify every line of code submitted.
 
 ## Setup
 
-1. Install dependencies:
+1.  **Clone the repository:**
 
-   ```bash
-   pnpm install
-   ```
+    ```bash
+    git clone https://github.com/mirza-mohibul-hasan/product-explorer.git
+    cd product-explorer
+    ```
 
-2. Start the development server:
+2.  **Install dependencies:**
 
-   ```bash
-   pnpm dev
-   ```
+    ```bash
+    pnpm install
+    ```
 
-3. Lint and format:
+3.  **Start the development server:**
 
-```bash
- pnpm lint
- pnpm format
-```
+    ```bash
+    pnpm dev
+    ```
+
+4.  **Lint and format (Optional):**
+    ```bash
+    pnpm lint
+    pnpm format
+    ```
