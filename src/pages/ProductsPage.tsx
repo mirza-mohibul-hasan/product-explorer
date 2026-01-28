@@ -26,7 +26,7 @@ export function ProductsPage() {
 
   const sorted =
     filters.sortBy === "price"
-      ? sortProducts(products, filters.sortOrder)
+      ? sortProducts(products, filters.sortOrder || "asc")
       : products;
 
   if (!isFetching && products.length === 0) {

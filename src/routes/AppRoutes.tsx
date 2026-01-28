@@ -6,6 +6,8 @@ import { CategoriesPage } from "../pages/CategoriesPage";
 import { SettingsPage } from "../pages/SettingsPage";
 import RouteError from "../components/RouteError";
 
+import { HomePage } from "../pages/HomePage";
+
 export const router = createBrowserRouter([
   {
     element: <AppLayout />,
@@ -13,7 +15,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Hello World</h1>,
+        element: <HomePage />,
       },
       {
         path: "products",
