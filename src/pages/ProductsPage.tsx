@@ -1,8 +1,12 @@
 import { ProductFilters } from "../components/ProductFilters";
+import { ProductTable } from "../components/ProductTable";
+import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
+import { sortProducts } from "../utils/sortProducts";
 import { useProductFilterStore } from "../store/useProductFilterStore";
 import { useProducts } from "../hooks/useProducts";
 import { useSyncFiltersToUrl } from "../hooks/useSyncFiltersToUrl";
 import { useHydrateFiltersFromUrl } from "../hooks/useHydrateFiltersFromUrl";
+import { TableSkeleton } from "../components/Skeleton/TableSkeleton";
 
 export function ProductsPage() {
   const filters = useProductFilterStore();
@@ -10,8 +14,20 @@ export function ProductsPage() {
   useHydrateFiltersFromUrl();
   useSyncFiltersToUrl(filters);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     useProducts(filters);
+
+  const loadMoreRef = useInfiniteScroll(
+    fetchNextPage,
+    !!hasNextPage && !isFetchingNextPage,
+  );
+
+  const products = data?.pages.flatMap((p) => p.products) ?? [];
+
+  const sorted =
+    filters.sortBy === "price"
+      ? sortProducts(products, filters.sortOrder)
+      : products;
 
   return (
     <div className="space-y-6">
@@ -19,25 +35,16 @@ export function ProductsPage() {
 
       <ProductFilters />
 
-      {data?.pages.map((page, i) => (
-        <ul key={i} className="space-y-2">
-          {page.products.map((product) => (
-            <li key={product.id} className="rounded border px-3 py-2">
-              {product.title}
-            </li>
-          ))}
-        </ul>
-      ))}
-
-      {hasNextPage && (
-        <button
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-          className="rounded border px-4 py-2"
-        >
-          {isFetchingNextPage ? "Loading..." : "Load more"}
-        </button>
+      {isFetching && !data ? (
+        <TableSkeleton />
+      ) : (
+        <ProductTable products={sorted} />
       )}
+
+      {/* Infinite scroll trigger */}
+      {hasNextPage && <div ref={loadMoreRef} className="h-8" />}
+
+      {isFetchingNextPage && <TableSkeleton />}
     </div>
   );
 }
