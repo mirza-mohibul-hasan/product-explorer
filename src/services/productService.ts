@@ -1,4 +1,4 @@
-import type { Product, ProductsResponse } from "../types/product";
+import type { Product, ProductsResponse, Category } from "../types/product";
 import { apiClient } from "./apiClient";
 
 const PAGE_LIMIT = 20;
@@ -49,8 +49,8 @@ export const productService = {
   },
 
   // Get categories
-  getCategories: async (): Promise<string[]> => {
-    const { data } = await apiClient.get<string[]>("/products/categories");
+  getCategories: async (): Promise<Category[]> => {
+    const { data } = await apiClient.get<Category[]>("/products/categories");
     return data;
   },
 };
