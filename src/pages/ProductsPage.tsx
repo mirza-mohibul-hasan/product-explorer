@@ -1,30 +1,43 @@
+import { ProductFilters } from "../components/ProductFilters";
 import { useProductFilterStore } from "../store/useProductFilterStore";
+import { useProducts } from "../hooks/useProducts";
+import { useSyncFiltersToUrl } from "../hooks/useSyncFiltersToUrl";
+import { useHydrateFiltersFromUrl } from "../hooks/useHydrateFiltersFromUrl";
 
 export function ProductsPage() {
-  const { search, setSearch, sortOrder, setSortOrder, resetFilters } =
-    useProductFilterStore();
+  const filters = useProductFilterStore();
+
+  useHydrateFiltersFromUrl();
+  useSyncFiltersToUrl(filters);
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useProducts(filters);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="text-xl font-semibold">Products</h1>
 
-      <input
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search..."
-        className="border px-2 py-1 rounded"
-      />
+      <ProductFilters />
 
-      <button
-        onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-        className="px-3 py-1 border rounded"
-      >
-        Sort: {sortOrder}
-      </button>
+      {data?.pages.map((page, i) => (
+        <ul key={i} className="space-y-2">
+          {page.products.map((product) => (
+            <li key={product.id} className="rounded border px-3 py-2">
+              {product.title}
+            </li>
+          ))}
+        </ul>
+      ))}
 
-      <button onClick={resetFilters} className="px-3 py-1 border rounded">
-        Reset
-      </button>
+      {hasNextPage && (
+        <button
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+          className="rounded border px-4 py-2"
+        >
+          {isFetchingNextPage ? "Loading..." : "Load more"}
+        </button>
+      )}
     </div>
   );
 }
